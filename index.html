@@ -1,0 +1,498 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Hantupedia</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+body {
+margin: 0;
+padding: 0;
+background-color: #121212;
+color: #e5e7eb;
+font-family: 'Lora', serif;
+overflow-x: hidden;
+width: 100vw;
+}
+.modal-open {
+overflow: hidden;
+}
+.occult-title {
+font-family: 'Cinzel', serif;
+}
+.noise-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+pointer-events: none;
+z-index: 45;
+opacity: 0.03;
+background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+}
+.vignette {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+pointer-events: none;
+z-index: 40;
+background: radial-gradient(circle at center, transparent 30%, #0a0a0a 100%);
+}
+.flicker {
+animation: flicker 5s infinite;
+}
+@keyframes flicker {
+0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 1; }
+20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.4; }
+}
+.eerie-img {
+filter: grayscale(100%) contrast(120%) brightness(0.7);
+}
+#creepyLoading {
+background: repeating-radial-gradient(circle at 50% 50%, #121212, #121212 2px, #1a1010 3px, #1a1010 4px);
+animation: tvStatic 0.15s infinite;
+}
+@keyframes tvStatic {
+0% { background-position: 0 0; }
+100% { background-position: 15px 15px; }
+}
+.glitch-text {
+position: relative;
+color: #b91c1c;
+font-family: 'Cinzel', serif;
+font-size: 1.5rem;
+letter-spacing: 0.1em;
+animation: glitch-anim 2s infinite linear alternate-reverse;
+text-shadow: 0 0 10px rgba(185, 28, 28, 0.8);
+}
+@keyframes glitch-anim {
+0% { opacity: 1; transform: translate(0); }
+20% { opacity: 0.8; transform: translate(-2px, 1px); }
+40% { opacity: 0.9; transform: translate(2px, -1px); }
+60% { opacity: 0.7; transform: translate(-1px, 2px); }
+80% { opacity: 1; transform: translate(1px, -2px); }
+100% { opacity: 0.8; transform: translate(0); }
+}
+.highlight-match {
+color: #dc2626;
+font-weight: bold;
+text-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
+}
+.suggestion-box {
+position: absolute;
+top: 100%;
+left: 0;
+right: 0;
+background-color: #1f1f1f;
+border: 1px solid #2a2a2a;
+border-top: none;
+border-radius: 0 0 0.5rem 0.5rem;
+z-index: 50;
+max-height: 200px;
+overflow-y: auto;
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+.suggestion-item {
+padding: 12px 16px;
+cursor: pointer;
+border-bottom: 1px solid #2a2a2a;
+transition: background-color 0.2s;
+}
+.suggestion-item:last-child {
+border-bottom: none;
+}
+.suggestion-item:hover {
+background-color: #2a2a2a;
+}
+</style>
+</head>
+<body class="w-full min-h-screen flex flex-col m-0 p-0 relative">
+<div class="noise-overlay"></div>
+<div class="vignette"></div>
+
+<header class="w-full bg-[#181818]/95 backdrop-blur-md border-b border-red-900/30 p-4 sticky top-0 z-30 shadow-lg relative">
+<div id="forceTrigger" class="w-16 h-16 absolute left-0 top-0 z-50 cursor-default"></div>
+<div id="peekTrigger" class="w-16 h-16 absolute right-0 top-0 z-50 cursor-default"></div>
+<h1 class="occult-title text-3xl font-bold text-red-800 tracking-wider text-center flicker pointer-events-none relative z-10">Hantupedia</h1>
+<div class="mt-5 relative z-40 flex items-center">
+<input type="text" id="searchInput" placeholder="Pencarian..." class="w-full bg-[#1f1f1f] border border-[#2a2a2a] text-gray-200 rounded px-4 py-3 pr-12 focus:outline-none focus:border-red-900/60 focus:bg-[#241a1a] transition-colors placeholder-gray-600 font-sans" autocomplete="off">
+<button id="clearBtn" class="absolute right-3 text-gray-500 hover:text-gray-300 hidden focus:outline-none transition-colors">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+</button>
+<div id="suggestionBox" class="suggestion-box hidden"></div>
+</div>
+</header>
+
+<main id="contentArea" class="w-full flex-1 flex flex-col gap-[2px] bg-[#0a0a0a] z-10 relative pb-4"></main>
+
+<footer class="w-full bg-[#181818] border-t border-red-900/20 py-4 px-4 z-10 relative mt-auto flex items-center justify-center">
+<div class="text-center flex flex-col gap-1 w-full pointer-events-none">
+<p class="occult-title text-red-800/80 text-lg font-bold tracking-widest">Hantupedia</p>
+<p class="text-gray-500 text-[10px] font-sans tracking-widest uppercase">Arsip Entitas Nusantara &copy; 2026</p>
+</div>
+</footer>
+
+<div id="creepyLoading" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center">
+<div class="glitch-text font-bold uppercase tracking-widest">Memuat...</div>
+</div>
+
+<div id="detailModal" class="fixed inset-0 bg-[#121212] z-50 hidden overflow-y-auto w-full h-full m-0 p-0">
+<div class="w-full min-h-screen flex flex-col relative m-0 p-0">
+<button id="closeBtn" class="absolute top-4 right-4 bg-black/70 backdrop-blur-md text-gray-300 border border-gray-700 px-4 py-2 rounded font-sans text-sm z-20 hover:text-white hover:border-gray-500 transition-colors uppercase tracking-wider">Tutup</button>
+<div id="imageContainer" class="relative w-full h-[40vh] hidden m-0 p-0 bg-[#181818]">
+<div class="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent z-10"></div>
+<img id="detailImage" class="w-full h-full object-cover absolute inset-0 hidden eerie-img" src="" alt="">
+</div>
+<div class="p-6 flex-1 z-20 relative -mt-10">
+<h2 id="detailTitle" class="occult-title text-4xl font-bold mb-2 text-gray-100 tracking-wide"></h2>
+<div class="flex flex-wrap gap-2 mb-6 border-b border-gray-800 pb-4">
+<span id="detailKategori" class="bg-red-900/30 text-red-400 text-xs px-2 py-1 rounded font-sans uppercase tracking-widest border border-red-900/40"></span>
+<span id="detailBahaya" class="bg-orange-900/30 text-orange-400 text-xs px-2 py-1 rounded font-sans uppercase tracking-widest border border-orange-900/40"></span>
+</div>
+<div class="space-y-6">
+<div>
+<h3 class="text-sm text-gray-400 uppercase tracking-widest font-sans mb-1">Daerah Asal</h3>
+<p id="detailAsal" class="text-gray-200"></p>
+</div>
+<div>
+<h3 class="text-sm text-gray-400 uppercase tracking-widest font-sans mb-1">Deskripsi</h3>
+<p id="detailDeskripsi" class="text-gray-200 leading-relaxed text-justify"></p>
+</div>
+<div>
+<h3 class="text-sm text-gray-400 uppercase tracking-widest font-sans mb-2">Karakteristik</h3>
+<ul class="list-none space-y-2 text-gray-200 text-sm">
+<li><strong class="text-gray-400">Fisik:</strong> <span id="detailFisik"></span></li>
+<li><strong class="text-gray-400">Suara:</strong> <span id="detailSuara"></span></li>
+<li><strong class="text-gray-400">Aroma:</strong> <span id="detailAroma"></span></li>
+</ul>
+</div>
+<div>
+<h3 class="text-sm text-gray-400 uppercase tracking-widest font-sans mb-1">Mitos</h3>
+<p id="detailMitos" class="text-gray-200 leading-relaxed text-justify"></p>
+</div>
+<div>
+<h3 class="text-sm text-gray-400 uppercase tracking-widest font-sans mb-1">Cara Menghindari</h3>
+<p id="detailMenghindari" class="text-gray-200 leading-relaxed text-justify"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script src="database.js"></script>
+<script>
+const contentArea = document.getElementById("contentArea");
+const searchInput = document.getElementById("searchInput");
+const clearBtn = document.getElementById("clearBtn");
+const suggestionBox = document.getElementById("suggestionBox");
+const detailModal = document.getElementById("detailModal");
+const closeBtn = document.getElementById("closeBtn");
+const creepyLoading = document.getElementById("creepyLoading");
+const forceTrigger = document.getElementById("forceTrigger");
+const peekTrigger = document.getElementById("peekTrigger");
+const placeholderUrl = "https://down-yuantu.pngtree.com/element_our/20250327/bg/4256eafc890b8.png?e=1783375509&st=M2Q1OTM3MTU1YmQ0NTY5MGQwMmQyYzUwZGNiOGMyOWQ&n=placeholder.png";
+
+let imageMap = {};
+let isForced = false;
+let currentForcedTargetId = null;
+let lastScrollPosition = 0;
+let lastPeekedItem = null;
+
+async function preloadWikiImages() {
+if (typeof databaseHantuIndonesia === 'undefined') return;
+const titles = databaseHantuIndonesia.map(h => h.nama);
+const chunkSize = 40;
+for (let i = 0; i < titles.length; i += chunkSize) {
+const chunk = titles.slice(i, i + chunkSize);
+const titlesParam = encodeURIComponent(chunk.join("|"));
+const url = `https://id.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=thumbnail&pithumbsize=800&redirects=1&titles=${titlesParam}`;
+try {
+const response = await fetch(url);
+const data = await response.json();
+if (data.query && data.query.pages) {
+const pages = Object.values(data.query.pages);
+pages.forEach(page => {
+if (page.thumbnail) {
+const matchedTitle = chunk.find(t => t.toLowerCase() === page.title.toLowerCase());
+if (matchedTitle) {
+imageMap[matchedTitle] = page.thumbnail.source;
+} else {
+imageMap[page.title] = page.thumbnail.source;
+}
+}
+});
+}
+} catch (error) {}
+}
+}
+
+function highlightMatch(name, query) {
+if (!query) return name;
+let result = '';
+let qIdx = 0;
+const qLower = query.toLowerCase();
+for (let i = 0; i < name.length; i++) {
+if (qIdx < qLower.length && name[i].toLowerCase() === qLower[qIdx]) {
+result += `<span class="highlight-match">${name[i]}</span>`;
+qIdx++;
+} else {
+result += name[i];
+}
+}
+return result;
+}
+
+function scoreMatch(query, name) {
+const qLower = query.toLowerCase();
+const nLower = name.toLowerCase();
+let score = 0;
+let qIdx = 0;
+let consecutive = 0;
+let maxConsecutive = 0;
+
+for (let i = 0; i < nLower.length; i++) {
+if (qIdx < qLower.length && nLower[i] === qLower[qIdx]) {
+score += 10;
+consecutive++;
+if (consecutive > maxConsecutive) maxConsecutive = consecutive;
+qIdx++;
+} else {
+consecutive = 0;
+}
+}
+score += maxConsecutive * 5;
+if (nLower.startsWith(qLower[0])) score += 15;
+return score;
+}
+
+function getSuggestions(query, list) {
+if (!query) return [];
+const scoredList = list.map(item => ({
+item,
+score: scoreMatch(query, item.nama)
+})).filter(x => x.score > 0);
+
+scoredList.sort((a, b) => b.score - a.score);
+return scoredList.map(x => x.item);
+}
+
+function renderCards(dataArray, highlightQuery = "") {
+contentArea.innerHTML = "";
+if (!dataArray || dataArray.length === 0) {
+contentArea.innerHTML = "<div class='p-8 text-gray-500 text-center font-sans tracking-widest uppercase text-sm'>Data tidak ditemukan</div>";
+return;
+}
+
+dataArray.forEach(data => {
+if (data.id === 1 && !currentForcedTargetId) return;
+
+const card = document.createElement("div");
+card.id = `card-${data.id}`;
+card.className = "w-full bg-[#181818] flex flex-col justify-end relative h-64 cursor-pointer overflow-hidden group border-b border-[#222222]";
+
+const wikiImage = imageMap[data.nama] || imageMap[data.nama.toLowerCase()];
+const imageUrl = wikiImage ? wikiImage : placeholderUrl;
+
+const img = document.createElement("img");
+img.id = `img-${data.id}`;
+img.src = imageUrl;
+img.className = "absolute inset-0 w-full h-full object-cover opacity-50 eerie-img group-hover:opacity-70 transition-opacity duration-700";
+card.appendChild(img);
+
+const gradient = document.createElement("div");
+gradient.className = "absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/70 to-transparent w-full";
+card.appendChild(gradient);
+
+const titleContainer = document.createElement("div");
+titleContainer.className = "relative p-5 w-full z-10 flex flex-col gap-1";
+const title = document.createElement("h3");
+title.id = `title-${data.id}`;
+title.className = "occult-title text-2xl font-bold text-gray-100 tracking-wide transition-all duration-300";
+title.innerHTML = highlightMatch(data.nama, highlightQuery);
+
+const region = document.createElement("span");
+region.id = `region-${data.id}`;
+region.className = "text-xs text-gray-400 font-sans uppercase tracking-widest transition-all duration-300";
+region.textContent = data.asal_daerah;
+
+titleContainer.appendChild(title);
+titleContainer.appendChild(region);
+card.appendChild(titleContainer);
+
+card.addEventListener("click", () => openDetail(data.id));
+contentArea.appendChild(card);
+});
+}
+
+function handleSearchInput(query) {
+if (!query) {
+clearBtn.classList.add("hidden");
+suggestionBox.classList.add("hidden");
+suggestionBox.innerHTML = "";
+return;
+}
+
+clearBtn.classList.remove("hidden");
+const searchableList = databaseHantuIndonesia.filter(h => h.id !== 1);
+const suggestions = getSuggestions(query, searchableList);
+
+if (suggestions.length > 0) {
+lastPeekedItem = suggestions[0];
+suggestionBox.innerHTML = "";
+suggestions.slice(0, 5).forEach(item => {
+const div = document.createElement("div");
+div.className = "suggestion-item text-gray-200 font-sans";
+div.innerHTML = highlightMatch(item.nama, query);
+div.addEventListener("click", () => {
+searchInput.value = item.nama;
+suggestionBox.classList.add("hidden");
+openDetail(item.id);
+});
+suggestionBox.appendChild(div);
+});
+suggestionBox.classList.remove("hidden");
+} else {
+suggestionBox.classList.add("hidden");
+}
+}
+
+async function init() {
+if (typeof databaseHantuIndonesia === 'undefined') {
+contentArea.innerHTML = "<div class='p-8 text-red-500 text-center font-sans tracking-widest uppercase text-sm'>Gagal memuat database.js</div>";
+return;
+}
+contentArea.innerHTML = "<div class='p-8 text-gray-500 text-center font-sans tracking-widest uppercase text-sm'>Memuat data...</div>";
+await preloadWikiImages();
+const displayList = databaseHantuIndonesia.filter(h => h.id !== 1);
+renderCards(displayList);
+}
+
+function showLoading() {
+creepyLoading.classList.remove("hidden");
+creepyLoading.classList.add("flex");
+}
+
+function hideLoading() {
+creepyLoading.classList.add("hidden");
+creepyLoading.classList.remove("flex");
+}
+
+function openDetail(id) {
+lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+showLoading();
+suggestionBox.classList.add("hidden");
+
+let targetId = id;
+if (isForced) {
+targetId = 1;
+currentForcedTargetId = id;
+}
+
+const data = databaseHantuIndonesia.find(h => h.id === targetId);
+if (!data) {
+hideLoading();
+return;
+}
+
+setTimeout(() => {
+document.getElementById("detailTitle").textContent = data.nama;
+document.getElementById("detailKategori").textContent = data.kategori;
+document.getElementById("detailBahaya").textContent = `Bahaya: ${data.tingkat_bahaya}`;
+document.getElementById("detailAsal").textContent = data.asal_daerah;
+document.getElementById("detailDeskripsi").textContent = data.deskripsi;
+document.getElementById("detailFisik").textContent = data.karakteristik.fisik;
+document.getElementById("detailSuara").textContent = data.karakteristik.suara;
+document.getElementById("detailAroma").textContent = data.karakteristik.aroma;
+document.getElementById("detailMitos").textContent = data.mitos;
+document.getElementById("detailMenghindari").textContent = data.cara_menghindari;
+
+const imageContainer = document.getElementById("imageContainer");
+const detailImage = document.getElementById("detailImage");
+const wikiImage = imageMap[data.nama] || imageMap[data.nama.toLowerCase()];
+
+detailImage.src = wikiImage ? wikiImage : placeholderUrl;
+detailImage.classList.remove("hidden");
+imageContainer.classList.remove("hidden");
+
+hideLoading();
+document.body.classList.add("modal-open");
+detailModal.classList.remove("hidden");
+detailModal.scrollTo(0, 0);
+}, 300);
+}
+
+closeBtn.addEventListener("click", () => {
+detailModal.classList.add("hidden");
+document.body.classList.remove("modal-open");
+window.scrollTo(0, lastScrollPosition);
+
+if (isForced && currentForcedTargetId) {
+const forcedData = databaseHantuIndonesia.find(h => h.id === 1);
+if (forcedData) {
+const targetIndex = databaseHantuIndonesia.findIndex(h => h.id === currentForcedTargetId);
+if (targetIndex !== -1) {
+databaseHantuIndonesia[targetIndex] = { ...forcedData, id: currentForcedTargetId };
+
+const targetTitle = document.getElementById(`title-${currentForcedTargetId}`);
+const targetRegion = document.getElementById(`region-${currentForcedTargetId}`);
+const targetImg = document.getElementById(`img-${currentForcedTargetId}`);
+
+if (targetTitle) targetTitle.textContent = forcedData.nama;
+if (targetRegion) targetRegion.textContent = forcedData.asal_daerah;
+if (targetImg) {
+const wikiImage = imageMap[forcedData.nama] || imageMap[forcedData.nama.toLowerCase()];
+targetImg.src = wikiImage ? wikiImage : placeholderUrl;
+}
+}
+}
+isForced = false;
+currentForcedTargetId = null;
+}
+});
+
+searchInput.addEventListener("input", (e) => {
+handleSearchInput(e.target.value.trim());
+});
+
+document.addEventListener("click", (e) => {
+if (!searchInput.contains(e.target) && !suggestionBox.contains(e.target)) {
+suggestionBox.classList.add("hidden");
+}
+});
+
+searchInput.addEventListener("focus", () => {
+if (searchInput.value.trim()) {
+suggestionBox.classList.remove("hidden");
+}
+});
+
+clearBtn.addEventListener("click", () => {
+searchInput.value = "";
+clearBtn.classList.add("hidden");
+suggestionBox.classList.add("hidden");
+});
+
+forceTrigger.addEventListener("click", () => {
+isForced = true;
+});
+
+peekTrigger.addEventListener("click", () => {
+if (lastPeekedItem) {
+renderCards([lastPeekedItem]);
+setTimeout(() => {
+const displayList = databaseHantuIndonesia.filter(h => h.id !== 1 || currentForcedTargetId);
+renderCards(displayList);
+}, 1000);
+}
+});
+
+init();
+</script>
+</body>
+</html>
