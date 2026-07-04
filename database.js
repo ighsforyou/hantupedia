@@ -798,7 +798,6 @@ const databaseHantuIndonesia = [
     mitos: "Arwah wanita yang semasa hidupnya lalai sholat atau meninggal saat bersiap sholat, bergentayangan untuk melengkapi ibadahnya yang terputus.",
     tingkat_bahaya: "Rendah",
     cara_menghindari: "Tidak perlu takut karena hantu ini jarang menyerang fisik. Cukup lanjutkan ibadah sholat Anda dengan khusyuk dan bacalah ayat kursi setelah selesai."
-  }
 {
     id: 61,
     name: "Banshee",
