@@ -338,7 +338,10 @@ return;
 }
 
 clearBtn.classList.remove("hidden");
-const searchableList = databaseHantuIndonesia.filter(h => h.id !== 1);
+const searchableList = typeof cariHantuBerdasarkanNama === 'function' 
+  ? cariHantuBerdasarkanNama(query).filter(h => h.id !== 1)
+  : databaseHantuIndonesia.filter(h => h.id !== 1);
+
 const suggestions = getSuggestions(query, searchableList);
 
 if (suggestions.length > 0) {
