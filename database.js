@@ -798,7 +798,167 @@ const databaseHantuIndonesia = [
     mitos: "Arwah wanita yang semasa hidupnya lalai sholat atau meninggal saat bersiap sholat, bergentayangan untuk melengkapi ibadahnya yang terputus.",
     tingkat_bahaya: "Rendah",
     cara_menghindari: "Tidak perlu takut karena hantu ini jarang menyerang fisik. Cukup lanjutkan ibadah sholat Anda dengan khusyuk dan bacalah ayat kursi setelah selesai."
-    }
+    },
+    {
+    id: 51,
+    nama: "Lampor",
+    alias: ["Keranda Terbang", "Setan Lampor"],
+    asal_daerah: "Jawa Tengah / Jawa Timur",
+    kategori: "Pasukan Gaib / Jin",
+    deskripsi: "Iblis atau pasukan gaib yang sering dikaitkan dengan Nyi Blorong atau penguasa laut selatan, datang membawa keranda mayat terbang.",
+    karakteristik: {
+      fisik: "Keranda mayat kuno yang melayang di udara tanpa pembawa, sering diiringi kabut tebal.",
+      suara: "Suara ketukan keras 'welwo... welwo...' atau 'lampor... lampor...' dan gemerincing lonceng.",
+      aroma: "Bau kapur barus yang sangat menyengat bercampur bunga melati layu."
+    },
+    mitos: "Menculik orang yang masih berada di luar rumah saat malam hari. Orang yang diculik Lampor biasanya tidak akan pernah kembali atau kembali dalam keadaan linglung dan gila.",
+    tingkat_bahaya: "Sangat Tinggi",
+    cara_menghindari: "Jangan keluar rumah saat larut malam, bunyikan kentongan atau panci beramai-ramai untuk mengusirnya."
+  },
+  {
+    id: 52,
+    nama: "Nyi Blorong",
+    alias: ["Panglima Ratu Kidul"],
+    asal_daerah: "Pantai Selatan Jawa",
+    kategori: "Siluman / Dewi Pesugihan",
+    deskripsi: "Sosok siluman ular yang merupakan panglima perang Kanjeng Ratu Kidul, sering dijadikan sarana pesugihan berdarah.",
+    karakteristik: {
+      fisik: "Wanita berparas cantik jelita mengenakan kebaya hijau bersisik emas, namun bagian pinggang ke bawah berwujud ular raksasa.",
+      suara: "Desisan ular berukuran raksasa atau tawa merdu yang menggoda.",
+      aroma: "Wangi kembang setaman yang perlahan berubah menjadi bau amis darah."
+    },
+    mitos: "Nyi Blorong memberikan kekayaan melimpah berupa sisik emasnya kepada penganut pesugihan, namun meminta tumbal nyawa manusia secara berkala, biasanya anggota keluarga si peminta.",
+    tingkat_bahaya: "Sangat Tinggi",
+    cara_menghindari: "Jauhi praktik pesugihan dan ilmu hitam, serta kuatkan iman dan ibadah kepada Tuhan."
+  },
+  {
+    id: 53,
+    nama: "Mariaban",
+    alias: ["Siluman Bulu Darah"],
+    asal_daerah: "Kalimantan",
+    kategori: "Siluman / Makhluk Kriptid",
+    deskripsi: "Makhluk gaib berwujud mirip manusia berbulu lebat yang tinggal di pedalaman hutan Kalimantan, konon bulunya bisa dijadikan pelet ampuh.",
+    karakteristik: {
+      fisik: "Bertubuh besar mirip kera atau genderuwo dengan bulu kemerahan yang sangat lebat dan mata tajam menyala.",
+      suara: "Raungan keras yang menggetarkan pepohonan di hutan.",
+      aroma: "Bau anyir darah segar bercampur bau binatang buas."
+    },
+    mitos: "Mariaban sangat buas dan suka menghisap darah manusia atau hewan. Orang yang berhasil mendapatkan bulu Mariaban bisa menggunakannya sebagai ilmu pelet atau pengasihan tingkat tinggi.",
+    tingkat_bahaya: "Tinggi",
+    cara_menghindari: "Tidak masuk ke hutan pedalaman Kalimantan sendirian, terutama saat senja, dan selalu didampingi pemandu lokal atau tetua adat."
+  },
+  {
+    id: 54,
+    nama: "Sandekala",
+    alias: ["Setan Magrib"],
+    asal_daerah: "Jawa Barat / Banten (Sunda)",
+    kategori: "Makhluk Halus / Mitos Waktu",
+    deskripsi: "Entitas gaib yang muncul pada saat pergantian waktu sore ke malam (magrib), suka mengganggu anak-anak yang masih bermain di luar.",
+    karakteristik: {
+      fisik: "Wujudnya sering tidak terlihat jelas, kadang berupa bayangan hitam besar berbulu atau wanita tua menyeramkan.",
+      suara: "Suara lolongan anjing di kejauhan atau decakan lidah.",
+      aroma: "Bau kemenyan yang mendadak tercium di udara."
+    },
+    mitos: "Menculik anak-anak yang belum pulang ke rumah saat azan magrib berkumandang. Makhluk ini menyembunyikan korbannya di tempat gelap, gudang, atau rumpun bambu.",
+    tingkat_bahaya: "Sedang",
+    cara_menghindari: "Segera masuk ke dalam rumah, tutup pintu serta jendela sebelum waktu magrib tiba."
+  },
+  {
+    id: 55,
+    nama: "Burong Tujoh",
+    alias: ["Setan Tujuh Rupa"],
+    asal_daerah: "Aceh",
+    kategori: "Jin / Setan Pengganggu",
+    deskripsi: "Kelompok jin jahat dalam kepercayaan masyarakat Aceh yang sering merasuki tubuh seseorang atau mengganggu ibu hamil.",
+    karakteristik: {
+      fisik: "Bisa berubah wujud menjadi tujuh bentuk berbeda, mulai dari hewan hitam, bayangan tinggi, hingga wanita berwajah rata.",
+      suara: "Suara tawa terbahak-bahak tujuh orang sekaligus yang bergema di malam hari.",
+      aroma: "Bau bangkai bercampur bau hangus kotoran."
+    },
+    mitos: "Sering dikirim melalui ilmu sihir (santet) untuk menyakiti atau membuat targetnya menjadi gila. Korban yang kerasukan Burong Tujoh biasanya butuh beberapa pemuka agama untuk menyembuhkannya.",
+    tingkat_bahaya: "Tinggi",
+    cara_menghindari: "Selalu menjaga kebersihan diri, membaca doa pelindung sebelum tidur, dan menghindari perbuatan yang merugikan orang lain."
+  },
+  {
+    id: 56,
+    nama: "Cindaku",
+    alias: ["Manusia Harimau"],
+    asal_daerah: "Kerinci (Jambi / Sumatra Barat)",
+    kategori: "Siluman / Manusia Sakti",
+    deskripsi: "Ilmu warisan leluhur di tanah Kerinci di mana seseorang yang memiliki darah keturunan murni bisa mengubah dirinya menjadi harimau.",
+    karakteristik: {
+      fisik: "Berwujud manusia harimau (were-tiger) yang berdiri dengan dua kaki, berbulu loreng, bertaring tajam, dan memiliki kuku panjang.",
+      suara: "Auman harimau yang sangat keras namun memiliki intonasi ganjil seperti bahasa manusia kuno.",
+      aroma: "Bau khas musang atau bau hutan hujan tropis basah."
+    },
+    mitos: "Bukan sepenuhnya makhluk jahat. Cindaku adalah penjaga keseimbangan hubungan antara manusia dan alam. Mereka hanya menyerang orang yang melanggar pantangan hutan atau merusak alam Kerinci.",
+    tingkat_bahaya: "Sedang",
+    cara_menghindari: "Menjaga kelestarian hutan, tidak sombong saat mendaki Gunung Kerinci, dan mematuhi aturan adat setempat."
+  },
+  {
+    id: 57,
+    nama: "Hantu Gepeng",
+    alias: ["Hantu Lift", "Arwah Penyet"],
+    asal_daerah: "Jakarta (Urban Legend Kampus/Gedung)",
+    kategori: "Urban Legend / Arwah Penasaran",
+    deskripsi: "Arwah seseorang yang tewas tragis terjepit lift atau alat berat bertahun-tahun lalu.",
+    karakteristik: {
+      fisik: "Berwujud manusia pucat, namun tubuhnya gepeng seperti kertas atau penyok parah di satu sisi.",
+      suara: "Suara decitan besi lift dan rintihan pelan minta tolong dari lorong sempit.",
+      aroma: "Bau karat besi bercampur bau anyir darah."
+    },
+    mitos: "Suka menekan tombol lift secara acak dari lantai yang kosong atau tiba-tiba ikut berdiri di pojok lift bersama orang yang sedang sendirian di malam hari.",
+    tingkat_bahaya: "Rendah",
+    cara_menghindari: "Usahakan tidak naik lift sendirian di gedung tua pada larut malam, atau abaikan saja jika melihat sosok mencurigakan di pojokan."
+  },
+  {
+    id: 58,
+    nama: "Begu Ture",
+    alias: ["Setan Tangga"],
+    asal_daerah: "Sumatra Utara (Batak)",
+    kategori: "Makhluk Halus / Jin Usil",
+    deskripsi: "Hantu yang sering mendiami ture atau tangga kayu di rumah panggung tradisional Batak.",
+    karakteristik: {
+      fisik: "Jarang menampakkan diri secara wujud utuh, kadang hanya terlihat sebagai sepasang mata menyala di bawah anak tangga.",
+      suara: "Suara derit kayu tangga yang diinjak berulang kali ('krek... krek...') saat malam sepi.",
+      aroma: "Aroma tembakau kuno atau ludah sirih."
+    },
+    mitos: "Hantu ini tergolong usil dan suka menyandung kaki orang yang naik atau turun tangga di malam hari, membuat korbannya jatuh terjerembab tanpa alasan jelas.",
+    tingkat_bahaya: "Rendah",
+    cara_menghindari: "Berjalan hati-hati, tidak melamun saat naik tangga, dan mengucap salam atau permisi saat pulang larut malam."
+  },
+  {
+    id: 59,
+    nama: "Antu Banyu",
+    alias: ["Setan Sungai Musi"],
+    asal_daerah: "Palembang, Sumatra Selatan",
+    kategori: "Makhluk Air / Siluman",
+    deskripsi: "Varian lain dari penunggu air yang legendaris di Sungai Musi, jauh lebih agresif dari hantu air biasa.",
+    karakteristik: {
+      fisik: "Wanita berambut sangat panjang dan basah kuyup, rambutnya berlendir tajam yang digunakan untuk melilit korban, tubuhnya bungkuk dan penuh sisik hitam.",
+      suara: "Suara tangisan bayi atau isak wanita pelan dari tepi sungai saat senja.",
+      aroma: "Bau amis lumpur parit bercampur lumut mati."
+    },
+    mitos: "Antu Banyu membuat tangga kayu tepian sungai (lanting) menjadi berlendir. Saat ada orang turun lalu terpeleset, Antu Banyu akan langsung menariknya ke dasar sungai, memakan otaknya, dan membiarkan jasadnya mengambang keesokan harinya.",
+    tingkat_bahaya: "Tinggi",
+    cara_menghindari: "Jangan beraktivitas di sungai lepas saat matahari terbenam, siram tangga kayu lanting dengan air panas atau abu untuk menghilangkan lendir gaibnya."
+  },
+  {
+    id: 60,
+    nama: "Kemangmang",
+    alias: ["Hantu Batok"],
+    asal_daerah: "Bali / Jawa Timur",
+    kategori: "Jin / Makhluk Halus",
+    deskripsi: "Hantu aneh yang kerap berkeliaran di area persawahan basah atau pinggiran hutan.",
+    karakteristik: {
+      fisik: "Bentuknya mirip katak raksasa atau kura-kura tapi tanpa tubuh utuh, melainkan berupa batok kepala berongga yang bercahaya kemerahan seperti api kecil dari dalamnya.",
+      suara: "Suara 'klotak-klotak' atau decakan aneh di lumpur sawah.",
+      aroma: "Bau lumpur sawah gosong."
+    },
+    mitos: "Suka memakan kepiting sawah mentah-mentah. Kemangmang tidak terlalu berbahaya bagi manusia, namun cahayanya sering menjebak petani yang mengira itu adalah teman mereka yang membawa obor penerang.",
+    tingkat_bahaya: "Rendah",
+    cara_menghindari: "Jangan mengejar cahaya kecil tidak jelas di sawah pada malam hari, abaikan saja karena hantu ini pada dasarnya tidak mengincar manusia."
+  }
 ];
 
 /**
