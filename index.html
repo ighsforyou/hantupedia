@@ -262,7 +262,6 @@ const navListBtn = document.getElementById("navListBtn");
 const mantraModal = document.getElementById("mantraModal");
 const closeMantraBtn = document.getElementById("closeMantraBtn");
 const cryAudio = document.getElementById("cryAudio");
-const headerTitle = document.getElementById("headerTitle");
 const placeholderUrl = "https://down-yuantu.pngtree.com/element_our/20250327/bg/4256eafc890b8.png?e=1783375509&st=M2Q1OTM3MTU1YmQ0NTY5MGQwMmQyYzUwZGNiOGMyOWQ&n=placeholder.png";
 
 let imageMap = {};
@@ -369,13 +368,13 @@ return scoredList.map(x => x.item);
 
 function updateTitleIndicator() {
 if (isAppLocked) {
-headerTitle.textContent = "Hantupedia";
+leftFooterText.textContent = "Hantupedia";
 return;
 }
 if (isForced) {
-headerTitle.textContent = "HantupedIa";
+leftFooterText.textContent = "HantuPedia";
 } else {
-headerTitle.textContent = "Hantupedia";
+leftFooterText.textContent = "Hantupedia";
 }
 }
 
@@ -407,6 +406,8 @@ return;
 }
 
 dataArray.forEach(data => {
+if (data.id === 1 && !currentForcedTargetId && !isAppLocked) return;
+
 const card = document.createElement("div");
 card.id = `card-${data.id}`;
 card.className = "w-full bg-[#050505] flex flex-col justify-end relative h-64 cursor-pointer overflow-hidden group border-b border-[#1a1a1a]";
@@ -478,10 +479,15 @@ return;
 }
 
 switchToList();
+
 clearBtn.classList.remove("hidden");
 
-const baseList = typeof cariHantuBerdasarkanNama === 'function' ? cariHantuBerdasarkanNama(query) : databaseHantuIndonesia;
-const searchableList = baseList.filter(h => h.id !== 1);
+let searchableList = [];
+if (isAppLocked) {
+searchableList = typeof cariHantuBerdasarkanNama === 'function' ? cariHantuBerdasarkanNama(query) : databaseHantuIndonesia;
+} else {
+searchableList = typeof cariHantuBerdasarkanNama === 'function' ? cariHantuBerdasarkanNama(query).filter(h => h.id !== 1) : databaseHantuIndonesia.filter(h => h.id !== 1);
+}
 
 const suggestions = getSuggestions(query, searchableList);
 
@@ -549,7 +555,7 @@ databaseHantuIndonesia[targetIndex] = { ...forcedData, id: parsedId };
 }
 
 await preloadWikiImages();
-const displayList = databaseHantuIndonesia.filter(h => h.id !== 1);
+const displayList = isAppLocked ? databaseHantuIndonesia : databaseHantuIndonesia.filter(h => h.id !== 1);
 renderCards(displayList);
 updateTitleIndicator();
 }
