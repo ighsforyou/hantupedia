@@ -25,7 +25,7 @@ font-family: 'Cinzel', serif;
 }
 .aksara-jawa {
 font-family: 'Noto Sans Javanese', sans-serif;
-line-height: 2;
+line-height: 1.8;
 }
 .noise-overlay {
 position: fixed;
@@ -153,15 +153,15 @@ background-color: #1a1a1a;
 </button>
 </footer>
 
-<div id="mantraModal" class="fixed inset-0 bg-[#050202] z-[80] hidden flex-col items-center justify-center p-8 w-full h-full relative">
+<div id="mantraModal" class="fixed inset-0 bg-[#050202] z-[80] hidden flex-col items-center justify-center p-8">
 <div class="absolute inset-0 opacity-40 pointer-events-none" style="background-image: radial-gradient(circle at center, transparent 20%, #000000 90%);"></div>
 <button id="closeMantraBtn" class="absolute top-6 right-6 text-red-900/50 hover:text-red-700 transition-colors focus:outline-none p-2 z-20">
 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
 </button>
-<div class="relative z-10 text-center max-w-sm flex flex-col gap-10">
-<p class="aksara-jawa text-red-800/90 text-[2.5rem] tracking-wide drop-shadow-[0_0_8px_rgba(185,28,28,0.5)]">ꦲꦺꦴꦁ꧈ ꦱꦶꦁ ꦱꦸꦩꦶꦩ꧀ꦥꦼꦤ꧀ ꦲꦶꦁ ꦥꦼꦠꦼꦁ꧈ ꦏꦠꦺꦴꦤ꧀ꦲꦺꦴ! ꦠꦼꦏꦺꦴ... ꦠꦼꦏꦺꦴ... ꦠꦼꦏꦺꦴ!</p>
-<div class="w-32 h-[1px] bg-red-900/40 mx-auto"></div>
-<p class="occult-title text-gray-300/80 text-xl tracking-[0.15em] leading-loose">"Hong, sing sumimpen ing peteng, Katonho! Teko... teko... teko!"</p>
+<div class="relative z-10 text-center max-w-sm flex flex-col gap-6">
+<p class="aksara-jawa text-red-800/90 text-2xl tracking-wide drop-shadow-[0_0_8px_rgba(185,28,28,0.5)]">ꦲꦺꦴꦁ꧈ ꦱꦁ ꦱꦶꦤꦤ꧀ꦢꦶ ꦫꦶꦁ ꦲꦤ꧀ꦝꦏꦫ꧈ ꦩꦶꦗꦶꦭ ꦱꦶꦫ꧉ ꦥꦿꦥ꧀ꦠ... ꦥꦿꦥ꧀ꦠ... ꦥꦿꦥ꧀ꦠ...</p>
+<div class="w-24 h-[1px] bg-red-900/40 mx-auto"></div>
+<p class="occult-title text-gray-300/80 text-sm tracking-widest leading-loose">"Hong, sang sinandi ring andhakara, mijila sira! Prapta... prapta... prapta..."</p>
 </div>
 </div>
 
@@ -597,7 +597,7 @@ peekTrigger.addEventListener("click", () => {
 if (lastPeekedItem) {
 const nameParts = lastPeekedItem.nama.split(" ");
 leftFooterText.textContent = nameParts[0];
-rightFooterText.textContent = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+rightFooterText.textContent = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "-";
 
 setTimeout(() => {
 updateTitleIndicator();
@@ -612,11 +612,15 @@ mantraModal.classList.add("flex");
 document.body.classList.add("modal-open");
 
 try {
-cryAudio.volume = 0;
-cryAudio.play().then(() => {
+cryAudio.muted = true;
+let playPromise = cryAudio.play();
+if (playPromise !== undefined) {
+playPromise.then(() => {
 cryAudio.pause();
 cryAudio.currentTime = 0;
+cryAudio.muted = false;
 }).catch(() => {});
+}
 } catch(e) {}
 
 clearTimeout(delayTimeout);
@@ -624,6 +628,7 @@ clearInterval(fadeInterval);
 
 delayTimeout = setTimeout(async () => {
 try {
+cryAudio.muted = false;
 cryAudio.volume = 0;
 await cryAudio.play();
 await fadeAudio(cryAudio, 0, 1, 1000);
@@ -640,6 +645,10 @@ closeMantraBtn.addEventListener("click", () => {
 mantraModal.classList.add("hidden");
 mantraModal.classList.remove("flex");
 document.body.classList.remove("modal-open");
+clearTimeout(delayTimeout);
+clearInterval(fadeInterval);
+cryAudio.pause();
+cryAudio.currentTime = 0;
 });
 
 init();
