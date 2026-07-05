@@ -7,14 +7,15 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-body {
+html, body {
 margin: 0;
 padding: 0;
-background-color: #121212;
+background-color: #000000;
 color: #e5e7eb;
 font-family: 'Lora', serif;
 overflow-x: hidden;
-width: 100vw;
+width: 100%;
+min-height: 100vh;
 }
 .modal-open {
 overflow: hidden;
@@ -41,7 +42,7 @@ width: 100vw;
 height: 100vh;
 pointer-events: none;
 z-index: 40;
-background-color: rgba(0, 0, 0, 0.6);
+background-color: rgba(0, 0, 0, 0.3);
 }
 .flicker {
 animation: flicker 5s infinite;
@@ -54,7 +55,7 @@ animation: flicker 5s infinite;
 filter: grayscale(100%) contrast(120%) brightness(0.7);
 }
 #creepyLoading {
-background: repeating-radial-gradient(circle at 50% 50%, #121212, #121212 2px, #1a1010 3px, #1a1010 4px);
+background: repeating-radial-gradient(circle at 50% 50%, #000000, #000000 2px, #0a0505 3px, #0a0505 4px);
 animation: tvStatic 0.15s infinite;
 }
 @keyframes tvStatic {
@@ -88,26 +89,26 @@ position: absolute;
 top: 100%;
 left: 0;
 right: 0;
-background-color: #1f1f1f;
-border: 1px solid #2a2a2a;
+background-color: #0a0a0a;
+border: 1px solid #1a1a1a;
 border-top: none;
 border-radius: 0 0 0.5rem 0.5rem;
 z-index: 50;
 max-height: 200px;
 overflow-y: auto;
-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
 }
 .suggestion-item {
 padding: 12px 16px;
 cursor: pointer;
-border-bottom: 1px solid #2a2a2a;
+border-bottom: 1px solid #1a1a1a;
 transition: background-color 0.2s;
 }
 .suggestion-item:last-child {
 border-bottom: none;
 }
 .suggestion-item:hover {
-background-color: #2a2a2a;
+background-color: #1a1a1a;
 }
 .evp-bars {
 display: flex;
@@ -138,16 +139,16 @@ opacity: 0.8;
 .evp-bar:nth-child(9) { animation-delay: 0.1s; }
 </style>
 </head>
-<body class="w-full min-h-screen flex flex-col m-0 p-0 relative">
+<body class="w-full min-h-screen flex flex-col relative bg-black">
 <div class="noise-overlay"></div>
 <div class="dark-overlay"></div>
 
-<header class="w-full bg-[#181818]/95 backdrop-blur-md border-b border-red-900/30 p-4 sticky top-0 z-30 shadow-lg relative">
+<header class="w-full bg-[#050505]/95 backdrop-blur-md border-b border-red-900/30 p-4 sticky top-0 z-30 shadow-lg relative">
 <div id="forceTrigger" class="w-16 h-16 absolute left-0 top-0 z-50 cursor-default"></div>
 <div id="peekTrigger" class="w-16 h-16 absolute right-0 top-0 z-50 cursor-default"></div>
 <h1 class="occult-title text-3xl font-bold text-red-800 tracking-wider text-center flicker pointer-events-none relative z-10">Hantupedia</h1>
 <div class="mt-5 relative z-40 flex items-center">
-<input type="text" id="searchInput" placeholder="Pencarian..." class="w-full bg-[#1f1f1f] border border-[#2a2a2a] text-gray-200 rounded px-4 py-3 pr-12 focus:outline-none focus:border-red-900/60 focus:bg-[#241a1a] transition-colors placeholder-gray-600 font-sans" autocomplete="off">
+<input type="text" id="searchInput" placeholder="Pencarian..." class="w-full bg-[#0a0a0a] border border-[#1a1a1a] text-gray-200 rounded px-4 py-3 pr-12 focus:outline-none focus:border-red-900/60 focus:bg-[#0f0a0a] transition-colors placeholder-gray-600 font-sans" autocomplete="off">
 <button id="clearBtn" class="absolute right-3 text-gray-500 hover:text-gray-300 hidden focus:outline-none transition-colors">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
 </button>
@@ -155,15 +156,15 @@ opacity: 0.8;
 </div>
 </header>
 
-<main id="contentArea" class="w-full flex-1 flex flex-col gap-[2px] bg-[#0a0a0a] z-10 relative pb-24"></main>
+<main id="contentArea" class="w-full flex-1 flex flex-col gap-[2px] bg-[#000000] z-10 relative pb-24 min-h-screen"></main>
 
-<footer class="fixed bottom-0 left-0 w-full bg-[#181818] border-t border-red-900/20 h-16 z-30 flex items-center justify-around px-8 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.5)]">
+<footer class="fixed bottom-0 left-0 w-full bg-[#050505] border-t border-red-900/20 h-16 z-30 flex items-center justify-around px-8 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.8)]">
 <button class="text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
 <span class="text-[10px] font-sans tracking-widest mt-1">Beranda</span>
 </button>
 
-<button id="evpBtn" class="w-14 h-14 bg-[#121212] border border-red-900/50 rounded-full flex items-center justify-center text-red-700 hover:bg-[#1a1010] hover:border-red-700 transition-all focus:outline-none shadow-[0_0_15px_rgba(185,28,28,0.15)] relative -top-4">
+<button id="evpBtn" class="w-14 h-14 bg-[#000000] border border-red-900/50 rounded-full flex items-center justify-center text-red-700 hover:bg-[#0a0505] hover:border-red-700 transition-all focus:outline-none shadow-[0_0_15px_rgba(185,28,28,0.15)] relative -top-4">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
 </button>
 
@@ -173,7 +174,7 @@ opacity: 0.8;
 </button>
 </footer>
 
-<div id="evpModal" class="fixed inset-0 bg-[#0a0a0a]/95 backdrop-blur-xl z-[70] hidden flex-col items-center justify-center p-6">
+<div id="evpModal" class="fixed inset-0 bg-[#000000]/95 backdrop-blur-xl z-[70] hidden flex-col items-center justify-center p-6 w-full h-full">
 <div class="absolute top-6 left-6 text-red-900 text-xs font-sans tracking-[0.3em] uppercase flicker">Rec <span class="inline-block w-2 h-2 bg-red-600 rounded-full animate-pulse ml-1"></span></div>
 <button id="closeEvpBtn" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors focus:outline-none p-2">
 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -193,21 +194,21 @@ opacity: 0.8;
 <div class="evp-bar"></div>
 </div>
 
-<div class="w-full max-w-md bg-[#121212] border border-red-900/20 rounded p-4 min-h-[150px] shadow-inner flex flex-col">
+<div class="w-full max-w-md bg-[#050505] border border-red-900/20 rounded p-4 min-h-[150px] shadow-inner flex flex-col">
 <span class="text-gray-600 text-[10px] font-sans tracking-widest uppercase mb-2 border-b border-gray-800 pb-2">Transkrip Spektral</span>
 <p id="evpTranscript" class="text-gray-300 font-sans text-sm leading-relaxed text-center flex-1 flex items-center justify-center italic">Mendengarkan anomali suara...</p>
 </div>
 </div>
 
-<div id="creepyLoading" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center">
+<div id="creepyLoading" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center w-full h-full">
 <div class="glitch-text font-bold uppercase tracking-widest">Memuat...</div>
 </div>
 
-<div id="detailModal" class="fixed inset-0 bg-[#121212] z-50 hidden overflow-y-auto w-full h-full m-0 p-0">
+<div id="detailModal" class="fixed inset-0 bg-[#000000] z-50 hidden overflow-y-auto w-full h-full m-0 p-0">
 <div class="w-full min-h-screen flex flex-col relative m-0 p-0 pb-12">
 <button id="closeBtn" class="absolute top-4 right-4 bg-black/70 backdrop-blur-md text-gray-300 border border-gray-700 px-4 py-2 rounded font-sans text-sm z-20 hover:text-white hover:border-gray-500 transition-colors uppercase tracking-wider">Tutup</button>
-<div id="imageContainer" class="relative w-full h-[40vh] hidden m-0 p-0 bg-[#181818]">
-<div class="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent z-10"></div>
+<div id="imageContainer" class="relative w-full h-[40vh] hidden m-0 p-0 bg-[#050505]">
+<div class="absolute inset-0 bg-gradient-to-t from-[#000000] via-transparent to-transparent z-10"></div>
 <img id="detailImage" class="w-full h-full object-cover absolute inset-0 hidden eerie-img" src="" alt="">
 </div>
 <div class="p-6 flex-1 z-20 relative -mt-10">
@@ -269,6 +270,8 @@ let currentForcedTargetId = null;
 let lastScrollPosition = 0;
 let lastPeekedItem = null;
 let speechRecognition;
+
+window.lastCardTap = 0;
 
 async function preloadWikiImages() {
 if (typeof databaseHantuIndonesia === 'undefined') return;
@@ -360,7 +363,7 @@ if (data.id === 1 && !currentForcedTargetId) return;
 
 const card = document.createElement("div");
 card.id = `card-${data.id}`;
-card.className = "w-full bg-[#181818] flex flex-col justify-end relative h-64 cursor-pointer overflow-hidden group border-b border-[#222222]";
+card.className = "w-full bg-[#050505] flex flex-col justify-end relative h-64 cursor-pointer overflow-hidden group border-b border-[#1a1a1a]";
 
 const wikiImage = imageMap[data.nama] || imageMap[data.nama.toLowerCase()];
 const imageUrl = wikiImage ? wikiImage : placeholderUrl;
@@ -372,7 +375,7 @@ img.className = "absolute inset-0 w-full h-full object-cover opacity-50 eerie-im
 card.appendChild(img);
 
 const gradient = document.createElement("div");
-gradient.className = "absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/70 to-transparent w-full";
+gradient.className = "absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/70 to-transparent w-full";
 card.appendChild(gradient);
 
 const titleContainer = document.createElement("div");
@@ -391,7 +394,31 @@ titleContainer.appendChild(title);
 titleContainer.appendChild(region);
 card.appendChild(titleContainer);
 
-card.addEventListener("click", () => openDetail(data.id));
+let startX = 0, startY = 0;
+card.addEventListener('touchstart', (e) => {
+startX = e.touches[0].clientX;
+startY = e.touches[0].clientY;
+}, { passive: true });
+
+card.addEventListener('touchend', (e) => {
+const endX = e.changedTouches[0].clientX;
+const endY = e.changedTouches[0].clientY;
+const dist = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+if (dist < 15) {
+const now = Date.now();
+if (window.lastCardTap && now - window.lastCardTap < 400) return;
+window.lastCardTap = now;
+openDetail(data.id);
+}
+});
+
+card.addEventListener('click', (e) => {
+const now = Date.now();
+if (window.lastCardTap && now - window.lastCardTap < 400) return;
+window.lastCardTap = now;
+openDetail(data.id);
+});
+
 contentArea.appendChild(card);
 });
 }
