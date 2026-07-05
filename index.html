@@ -407,8 +407,6 @@ return;
 }
 
 dataArray.forEach(data => {
-if (data.id === 1 && !currentForcedTargetId && !isAppLocked) return;
-
 const card = document.createElement("div");
 card.id = `card-${data.id}`;
 card.className = "w-full bg-[#050505] flex flex-col justify-end relative h-64 cursor-pointer overflow-hidden group border-b border-[#1a1a1a]";
@@ -480,15 +478,10 @@ return;
 }
 
 switchToList();
-
 clearBtn.classList.remove("hidden");
 
-let searchableList = [];
-if (isAppLocked) {
-searchableList = typeof cariHantuBerdasarkanNama === 'function' ? cariHantuBerdasarkanNama(query) : databaseHantuIndonesia;
-} else {
-searchableList = typeof cariHantuBerdasarkanNama === 'function' ? cariHantuBerdasarkanNama(query).filter(h => h.id !== 1) : databaseHantuIndonesia.filter(h => h.id !== 1);
-}
+const baseList = typeof cariHantuBerdasarkanNama === 'function' ? cariHantuBerdasarkanNama(query) : databaseHantuIndonesia;
+const searchableList = baseList.filter(h => h.id !== 1);
 
 const suggestions = getSuggestions(query, searchableList);
 
@@ -544,8 +537,19 @@ if (typeof databaseHantuIndonesia === 'undefined') {
 contentArea.innerHTML = "<div class='p-8 text-red-500 text-center font-sans tracking-widest uppercase text-sm'>Gagal memuat database.js</div>";
 return;
 }
+
+const swappedId = localStorage.getItem('hantupedia_swapped_id');
+if (swappedId) {
+const parsedId = parseInt(swappedId);
+const forcedData = databaseHantuIndonesia.find(h => h.id === 1);
+const targetIndex = databaseHantuIndonesia.findIndex(h => h.id === parsedId);
+if (forcedData && targetIndex !== -1) {
+databaseHantuIndonesia[targetIndex] = { ...forcedData, id: parsedId };
+}
+}
+
 await preloadWikiImages();
-const displayList = isAppLocked ? databaseHantuIndonesia : databaseHantuIndonesia.filter(h => h.id !== 1);
+const displayList = databaseHantuIndonesia.filter(h => h.id !== 1);
 renderCards(displayList);
 updateTitleIndicator();
 }
@@ -629,6 +633,8 @@ if (targetImg) {
 const wikiImage = imageMap[forcedData.nama] || imageMap[forcedData.nama.toLowerCase()];
 targetImg.src = wikiImage ? wikiImage : placeholderUrl;
 }
+
+localStorage.setItem('hantupedia_swapped_id', currentForcedTargetId.toString());
 }
 }
 isForced = false;
@@ -713,6 +719,7 @@ cryAudio.pause();
 cryAudio.currentTime = 0;
 localStorage.setItem('hantupedia_locked', 'true');
 isAppLocked = true;
+updateTitleIndicator();
 }, 8000);
 } catch(e) {}
 }, 20000);
