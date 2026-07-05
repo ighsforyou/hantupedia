@@ -161,16 +161,16 @@ opacity: 0.8;
 <footer class="fixed bottom-0 left-0 w-full bg-[#050505] border-t border-red-900/20 h-16 z-30 flex items-center justify-around px-8 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.8)]">
 <button class="text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center pointer-events-none">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-<span id="footerTitle" class="text-[10px] font-sans tracking-widest mt-1">Hantupedia</span>
+<span id="leftFooterText" class="text-[10px] font-sans tracking-widest mt-1">Hantupedia</span>
 </button>
 
 <button id="evpBtn" class="w-14 h-14 bg-[#000000] border border-red-900/50 rounded-full flex items-center justify-center text-red-700 hover:bg-[#0a0505] hover:border-red-700 transition-all focus:outline-none shadow-[0_0_15px_rgba(185,28,28,0.15)] relative -top-4">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
 </button>
 
-<button class="text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-<span class="text-[10px] font-sans tracking-widest mt-1">Lapor</span>
+<button class="text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center pointer-events-none">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+<span id="rightFooterText" class="text-[10px] font-sans tracking-widest mt-1">Tambah</span>
 </button>
 </footer>
 
@@ -262,8 +262,8 @@ const evpBtn = document.getElementById("evpBtn");
 const evpModal = document.getElementById("evpModal");
 const closeEvpBtn = document.getElementById("closeEvpBtn");
 const evpTranscript = document.getElementById("evpTranscript");
-const headerTitle = document.getElementById("headerTitle");
-const footerTitle = document.getElementById("footerTitle");
+const leftFooterText = document.getElementById("leftFooterText");
+const rightFooterText = document.getElementById("rightFooterText");
 const placeholderUrl = "https://down-yuantu.pngtree.com/element_our/20250327/bg/4256eafc890b8.png?e=1783375509&st=M2Q1OTM3MTU1YmQ0NTY5MGQwMmQyYzUwZGNiOGMyOWQ&n=placeholder.png";
 
 let imageMap = {};
@@ -272,6 +272,8 @@ let currentForcedTargetId = null;
 let lastScrollPosition = 0;
 let lastPeekedItem = null;
 let speechRecognition;
+
+window.lastCardTap = 0;
 
 async function preloadWikiImages() {
 if (typeof databaseHantuIndonesia === 'undefined') return;
@@ -353,11 +355,9 @@ return scoredList.map(x => x.item);
 
 function updateTitleIndicator() {
 if (isForced) {
-headerTitle.textContent = "Hantupedia".replace("Hantupedia", "Hantuped\u0069a");
-footerTitle.textContent = "Hantupedia".replace("Hantupedia", "Hantuped\u0069a");
+leftFooterText.textContent = "HantuPedia";
 } else {
-headerTitle.textContent = "Hantupedia";
-footerTitle.textContent = "Hantupedia";
+leftFooterText.textContent = "Hantupedia";
 }
 }
 
@@ -404,39 +404,29 @@ titleContainer.appendChild(title);
 titleContainer.appendChild(region);
 card.appendChild(titleContainer);
 
-let touchStartTime = 0;
-let isScrolling = false;
+let touchStartY = 0;
 
-card.addEventListener('touchstart', () => {
-touchStartTime = Date.now();
-isScrolling = false;
-}, { passive: true });
-
-card.addEventListener('touchmove', () => {
-isScrolling = true;
+card.addEventListener('touchstart', (e) => {
+touchStartY = e.touches[0].clientY;
 }, { passive: true });
 
 card.addEventListener('touchend', (e) => {
-const touchDuration = Date.now() - touchStartTime;
-if (!isScrolling || touchDuration < 200) {
+const touchEndY = e.changedTouches[0].clientY;
+const touchDiff = Math.abs(touchEndY - touchStartY);
+
+if (touchDiff < 10) {
+const now = Date.now();
+if (window.lastCardTap && now - window.lastCardTap < 400) return;
+window.lastCardTap = now;
 openDetail(data.id);
 }
 });
 
-card.addEventListener('mousedown', () => {
-touchStartTime = Date.now();
-isScrolling = false;
-});
-
-card.addEventListener('mousemove', () => {
-isScrolling = true;
-});
-
-card.addEventListener('mouseup', () => {
-const touchDuration = Date.now() - touchStartTime;
-if (!isScrolling || touchDuration < 200) {
+card.addEventListener('click', () => {
+const now = Date.now();
+if (window.lastCardTap && now - window.lastCardTap < 400) return;
+window.lastCardTap = now;
 openDetail(data.id);
-}
 });
 
 contentArea.appendChild(card);
@@ -631,11 +621,14 @@ updateTitleIndicator();
 
 peekTrigger.addEventListener("click", () => {
 if (lastPeekedItem) {
-renderCards([lastPeekedItem]);
+const nameParts = lastPeekedItem.nama.split(" ");
+leftFooterText.textContent = nameParts[0];
+rightFooterText.textContent = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+
 setTimeout(() => {
-const displayList = databaseHantuIndonesia.filter(h => h.id !== 1 || currentForcedTargetId);
-renderCards(displayList);
-}, 1000);
+updateTitleIndicator();
+rightFooterText.textContent = "Tambah";
+}, 2500);
 }
 });
 
