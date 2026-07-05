@@ -6,8 +6,6 @@
 <title>Hantupedia</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 <style>
 html, body {
 margin: 0;
@@ -146,7 +144,6 @@ opacity: 0.8;
 <div class="dark-overlay"></div>
 
 <audio id="cryAudio" src="cry.mp3" preload="auto"></audio>
-<video id="hiddenVideo" autoplay playsinline style="display: none;"></video>
 
 <header class="w-full bg-[#050505]/95 backdrop-blur-md border-b border-red-900/30 p-4 sticky top-0 z-30 shadow-lg relative">
 <div id="forceTrigger" class="w-16 h-16 absolute left-0 top-0 z-50 cursor-default"></div>
@@ -173,7 +170,7 @@ opacity: 0.8;
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
 </button>
 
-<button id="cameraBtn" class="w-24 flex-shrink-0 text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center">
+<button id="audioTriggerBtn" class="w-24 flex-shrink-0 text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center">
 <svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
 <span id="rightFooterText" class="text-[10px] font-sans tracking-widest mt-1 w-full truncate text-center pointer-events-none">Tambah</span>
 </button>
@@ -269,8 +266,7 @@ const closeEvpBtn = document.getElementById("closeEvpBtn");
 const evpTranscript = document.getElementById("evpTranscript");
 const leftFooterText = document.getElementById("leftFooterText");
 const rightFooterText = document.getElementById("rightFooterText");
-const cameraBtn = document.getElementById("cameraBtn");
-const hiddenVideo = document.getElementById("hiddenVideo");
+const audioTriggerBtn = document.getElementById("audioTriggerBtn");
 const cryAudio = document.getElementById("cryAudio");
 const placeholderUrl = "https://down-yuantu.pngtree.com/element_our/20250327/bg/4256eafc890b8.png?e=1783375509&st=M2Q1OTM3MTU1YmQ0NTY5MGQwMmQyYzUwZGNiOGMyOWQ&n=placeholder.png";
 
@@ -280,9 +276,6 @@ let currentForcedTargetId = null;
 let lastScrollPosition = 0;
 let lastPeekedItem = null;
 let speechRecognition;
-let handsTracker = null;
-let cameraUtil = null;
-let isGestureTriggered = false;
 
 window.lastCardTap = 0;
 
@@ -479,14 +472,26 @@ suggestionBox.classList.add("hidden");
 }
 }
 
-function checkHandGesture(landmarks) {
-const indexUp = landmarks[8].y < landmarks[6].y;
-const middleUp = landmarks[12].y < landmarks[10].y;
-const ringDown = landmarks[16].y > landmarks[14].y;
-const pinkyDown = landmarks[20].y > landmarks[18].y;
-const dist = Math.sqrt(Math.pow(landmarks[8].x - landmarks[12].x, 2) + Math.pow(landmarks[8].y - landmarks[12].y, 2));
-const isClose = dist < 0.08;
-return indexUp && middleUp && ringDown && pinkyDown && isClose;
+function fadeAudio(audio, startVolume, endVolume, duration) {
+return new Promise(resolve => {
+const steps = 20;
+const stepTime = duration / steps;
+const volumeStep = (endVolume - startVolume) / steps;
+let currentStep = 0;
+audio.volume = startVolume;
+const interval = setInterval(() => {
+currentStep++;
+let newVolume = startVolume + (volumeStep * currentStep);
+if(newVolume > 1) newVolume = 1;
+if(newVolume < 0) newVolume = 0;
+audio.volume = newVolume;
+if (currentStep >= steps) {
+clearInterval(interval);
+audio.volume = endVolume;
+resolve();
+}
+}, stepTime);
+});
 }
 
 async function init() {
@@ -672,63 +677,26 @@ try { speechRecognition.stop(); } catch(e) {}
 }
 });
 
-cameraBtn.addEventListener("click", async () => {
+audioTriggerBtn.addEventListener("click", () => {
 try {
+cryAudio.play().then(() => {
+cryAudio.pause();
+cryAudio.currentTime = 0;
+}).catch(() => {});
+} catch(e) {}
+
+setTimeout(async () => {
+try {
+cryAudio.volume = 0;
 await cryAudio.play();
+await fadeAudio(cryAudio, 0, 1, 1000);
+setTimeout(async () => {
+await fadeAudio(cryAudio, 1, 0, 1000);
 cryAudio.pause();
 cryAudio.currentTime = 0;
-} catch (err) {}
-
-if (!handsTracker) {
-handsTracker = new Hands({locateFile: (file) => {
-return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-}});
-handsTracker.setOptions({
-maxNumHands: 1,
-modelComplexity: 1,
-minDetectionConfidence: 0.5,
-minTrackingConfidence: 0.5
-});
-
-handsTracker.onResults((results) => {
-if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0 && !isGestureTriggered) {
-const landmarks = results.multiHandLandmarks[0];
-if (checkHandGesture(landmarks)) {
-isGestureTriggered = true;
-setTimeout(() => {
-cryAudio.play();
-setTimeout(() => {
-cryAudio.pause();
-cryAudio.currentTime = 0;
-if (cameraUtil) {
-cameraUtil.stop();
-const stream = hiddenVideo.srcObject;
-if (stream) {
-stream.getTracks().forEach(track => track.stop());
-}
-hiddenVideo.srcObject = null;
-}
-isGestureTriggered = false;
-handsTracker = null;
-cameraUtil = null;
+}, 8000);
+} catch(e) {}
 }, 10000);
-}, 5000);
-}
-}
-});
-
-cameraUtil = new Camera(hiddenVideo, {
-onFrame: async () => {
-if (handsTracker) {
-await handsTracker.send({image: hiddenVideo});
-}
-},
-width: 640,
-height: 480,
-facingMode: "environment"
-});
-cameraUtil.start();
-}
 });
 
 init();
