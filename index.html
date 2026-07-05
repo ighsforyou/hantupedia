@@ -114,6 +114,9 @@ border-bottom: none;
 .suggestion-item:hover {
 background-color: #1a1a1a;
 }
+.nav-active {
+color: #b91c1c !important;
+}
 </style>
 </head>
 <body class="w-full min-h-screen flex flex-col relative bg-black">
@@ -135,16 +138,43 @@ background-color: #1a1a1a;
 </div>
 </header>
 
-<main id="contentArea" class="w-full flex-1 flex flex-col gap-[2px] bg-[#000000] z-10 relative pb-24 min-h-screen"></main>
+<main id="berandaView" class="w-full flex-1 flex flex-col gap-6 bg-[#000000] z-10 relative px-6 py-8 pb-28 min-h-screen">
+<div class="text-center border-b border-red-900/30 pb-6 mb-2">
+<h2 class="occult-title text-2xl text-gray-200 tracking-widest mb-3 drop-shadow-[0_0_5px_rgba(185,28,28,0.4)]">Arsip Kegelapan Nusantara</h2>
+<p class="text-sm text-gray-400 font-sans leading-relaxed text-justify">Selamat datang di Hantupedia. Ini adalah ruang penyimpanan untuk hal-hal yang tidak seharusnya diingat. Setiap entitas memiliki pola, setiap kutukan memiliki akar. Jangan percaya apa yang Anda dengar dalam gelap.</p>
+</div>
+
+<div>
+<h3 class="occult-title text-lg text-red-700 tracking-wider mb-2">Takhayul & Pantangan</h3>
+<p class="text-sm text-gray-400 font-sans leading-relaxed text-justify mb-3">Takhayul bukan sekadar cerita pengantar tidur; mereka adalah aturan bertahan hidup dari leluhur kita. Menunjuk kuburan dengan jari telunjuk diyakini dapat membuat jari tersebut membusuk. Menyapu rumah di malam hari sama dengan memanggil mereka yang kelaparan akan karma.</p>
+<p class="text-sm text-gray-400 font-sans leading-relaxed text-justify">Jika Anda mencium aroma bunga melati yang menyengat namun tidak ada tanaman di sekitar, berbaliklah dan jangan pernah melihat ke atas pohon.</p>
+</div>
+
+<div>
+<h3 class="occult-title text-lg text-red-700 tracking-wider mb-2">Ritual & Pintu Masuk</h3>
+<p class="text-sm text-gray-400 font-sans leading-relaxed text-justify">Ada banyak cara untuk membuka pintu yang seharusnya tetap tertutup. Jelangkung, pemanggilan roh melalui bambu, hingga mengetuk pintu tiga kali pada pukul tiga dini hari. Entitas yang merespon jarang sekali entitas yang Anda panggil; mereka adalah parasit peniru yang mencari inang.</p>
+</div>
+
+<div class="mt-8 border border-red-900/40 bg-[#0a0505] p-5 rounded relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-red-800"></div>
+<h3 class="occult-title text-red-600 tracking-widest mb-3 flex items-center gap-2">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+PERINGATAN KERAS
+</h3>
+<p class="text-sm text-gray-300 font-sans leading-relaxed text-justify">Fitur MANTRA di aplikasi ini berisi rekaman aksara kuno pemanggil entitas. DILARANG KERAS melafalkan mantra tersebut di dalam hati maupun secara lisan apabila Anda sedang berada di ruangan gelap atau sedang sendirian. Kami tidak bertanggung jawab atas fenomena auditori atau visual yang mungkin terjadi.</p>
+</div>
+</main>
+
+<main id="contentArea" class="w-full flex-1 hidden flex-col gap-[2px] bg-[#000000] z-10 relative pb-28 min-h-screen"></main>
 
 <footer class="fixed bottom-0 left-0 w-full bg-[#050505] border-t border-red-900/20 h-16 z-30 flex items-center justify-between px-6 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.8)]">
-<button class="w-24 flex-shrink-0 text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center pointer-events-none">
+<button id="navBerandaBtn" class="w-24 flex-shrink-0 text-red-900 nav-active transition-colors focus:outline-none flex flex-col items-center">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
 <span id="leftFooterText" class="text-[10px] font-sans tracking-widest mt-1 w-full truncate text-center">Hantupedia</span>
 </button>
 
-<button class="w-14 h-14 flex-shrink-0 bg-[#000000] border border-red-900/50 rounded-full flex items-center justify-center text-red-700 pointer-events-none shadow-[0_0_15px_rgba(185,28,28,0.15)] relative -top-4">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+<button id="navListBtn" class="w-14 h-14 flex-shrink-0 bg-[#000000] border border-red-900/50 rounded-full flex items-center justify-center text-red-900/50 hover:bg-[#0a0505] hover:text-red-700 hover:border-red-700 transition-all focus:outline-none shadow-[0_0_15px_rgba(185,28,28,0.15)] relative -top-4">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="transform: rotate(180deg);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
 </button>
 
 <button id="mantraBtn" class="w-24 flex-shrink-0 text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center">
@@ -215,6 +245,7 @@ background-color: #1a1a1a;
 <script src="database.js"></script>
 <script>
 const contentArea = document.getElementById("contentArea");
+const berandaView = document.getElementById("berandaView");
 const searchInput = document.getElementById("searchInput");
 const clearBtn = document.getElementById("clearBtn");
 const suggestionBox = document.getElementById("suggestionBox");
@@ -226,9 +257,12 @@ const peekTrigger = document.getElementById("peekTrigger");
 const leftFooterText = document.getElementById("leftFooterText");
 const rightFooterText = document.getElementById("rightFooterText");
 const mantraBtn = document.getElementById("mantraBtn");
+const navBerandaBtn = document.getElementById("navBerandaBtn");
+const navListBtn = document.getElementById("navListBtn");
 const mantraModal = document.getElementById("mantraModal");
 const closeMantraBtn = document.getElementById("closeMantraBtn");
 const cryAudio = document.getElementById("cryAudio");
+const headerTitle = document.getElementById("headerTitle");
 const placeholderUrl = "https://down-yuantu.pngtree.com/element_our/20250327/bg/4256eafc890b8.png?e=1783375509&st=M2Q1OTM3MTU1YmQ0NTY5MGQwMmQyYzUwZGNiOGMyOWQ&n=placeholder.png";
 
 let imageMap = {};
@@ -238,6 +272,7 @@ let lastScrollPosition = 0;
 let lastPeekedItem = null;
 let delayTimeout;
 let fadeInterval;
+let isAppLocked = false;
 
 window.lastCardTap = 0;
 
@@ -333,11 +368,35 @@ return scoredList.map(x => x.item);
 }
 
 function updateTitleIndicator() {
-if (isForced) {
-leftFooterText.textContent = "HantuPedia";
-} else {
-leftFooterText.textContent = "Hantupedia";
+if (isAppLocked) {
+headerTitle.textContent = "Hantupedia";
+return;
 }
+if (isForced) {
+headerTitle.textContent = "HantupedIa";
+} else {
+headerTitle.textContent = "Hantupedia";
+}
+}
+
+function switchToList() {
+berandaView.classList.add("hidden");
+contentArea.classList.remove("hidden");
+contentArea.classList.add("flex");
+navBerandaBtn.classList.remove("nav-active");
+navBerandaBtn.classList.add("text-red-900/50");
+navListBtn.classList.add("text-red-700");
+navListBtn.classList.remove("text-red-900/50");
+}
+
+function switchToBeranda() {
+contentArea.classList.add("hidden");
+contentArea.classList.remove("flex");
+berandaView.classList.remove("hidden");
+navBerandaBtn.classList.add("nav-active");
+navBerandaBtn.classList.remove("text-red-900/50");
+navListBtn.classList.remove("text-red-700");
+navListBtn.classList.add("text-red-900/50");
 }
 
 function renderCards(dataArray, highlightQuery = "") {
@@ -348,7 +407,7 @@ return;
 }
 
 dataArray.forEach(data => {
-if (data.id === 1 && !currentForcedTargetId) return;
+if (data.id === 1 && !currentForcedTargetId && !isAppLocked) return;
 
 const card = document.createElement("div");
 card.id = `card-${data.id}`;
@@ -420,10 +479,16 @@ suggestionBox.innerHTML = "";
 return;
 }
 
+switchToList();
+
 clearBtn.classList.remove("hidden");
-const searchableList = typeof cariHantuBerdasarkanNama === 'function' 
-  ? cariHantuBerdasarkanNama(query).filter(h => h.id !== 1)
-  : databaseHantuIndonesia.filter(h => h.id !== 1);
+
+let searchableList = [];
+if (isAppLocked) {
+searchableList = typeof cariHantuBerdasarkanNama === 'function' ? cariHantuBerdasarkanNama(query) : databaseHantuIndonesia;
+} else {
+searchableList = typeof cariHantuBerdasarkanNama === 'function' ? cariHantuBerdasarkanNama(query).filter(h => h.id !== 1) : databaseHantuIndonesia.filter(h => h.id !== 1);
+}
 
 const suggestions = getSuggestions(query, searchableList);
 
@@ -471,13 +536,16 @@ resolve();
 }
 
 async function init() {
+if (localStorage.getItem('hantupedia_locked') === 'true') {
+isAppLocked = true;
+}
+
 if (typeof databaseHantuIndonesia === 'undefined') {
 contentArea.innerHTML = "<div class='p-8 text-red-500 text-center font-sans tracking-widest uppercase text-sm'>Gagal memuat database.js</div>";
 return;
 }
-contentArea.innerHTML = "<div class='p-8 text-gray-500 text-center font-sans tracking-widest uppercase text-sm'>Memuat data...</div>";
 await preloadWikiImages();
-const displayList = databaseHantuIndonesia.filter(h => h.id !== 1);
+const displayList = isAppLocked ? databaseHantuIndonesia : databaseHantuIndonesia.filter(h => h.id !== 1);
 renderCards(displayList);
 updateTitleIndicator();
 }
@@ -498,7 +566,7 @@ showLoading();
 suggestionBox.classList.add("hidden");
 
 let targetId = id;
-if (isForced) {
+if (isForced && !isAppLocked) {
 targetId = 1;
 currentForcedTargetId = id;
 }
@@ -536,12 +604,15 @@ detailModal.scrollTo(0, 0);
 }, 300);
 }
 
+navBerandaBtn.addEventListener('click', switchToBeranda);
+navListBtn.addEventListener('click', switchToList);
+
 closeBtn.addEventListener("click", () => {
 detailModal.classList.add("hidden");
 document.body.classList.remove("modal-open");
 window.scrollTo(0, lastScrollPosition);
 
-if (isForced && currentForcedTargetId) {
+if (isForced && currentForcedTargetId && !isAppLocked) {
 const forcedData = databaseHantuIndonesia.find(h => h.id === 1);
 if (forcedData) {
 const targetIndex = databaseHantuIndonesia.findIndex(h => h.id === currentForcedTargetId);
@@ -589,11 +660,13 @@ suggestionBox.classList.add("hidden");
 });
 
 forceTrigger.addEventListener("click", () => {
+if(isAppLocked) return;
 isForced = true;
 updateTitleIndicator();
 });
 
 peekTrigger.addEventListener("click", () => {
+if(isAppLocked) return;
 if (lastPeekedItem) {
 const nameParts = lastPeekedItem.nama.split(" ");
 leftFooterText.textContent = nameParts[0];
@@ -610,6 +683,8 @@ mantraBtn.addEventListener("click", () => {
 mantraModal.classList.remove("hidden");
 mantraModal.classList.add("flex");
 document.body.classList.add("modal-open");
+
+if (isAppLocked) return;
 
 try {
 cryAudio.muted = true;
@@ -636,19 +711,17 @@ setTimeout(async () => {
 await fadeAudio(cryAudio, 1, 0, 1000);
 cryAudio.pause();
 cryAudio.currentTime = 0;
+localStorage.setItem('hantupedia_locked', 'true');
+isAppLocked = true;
 }, 8000);
 } catch(e) {}
-}, 10000);
+}, 20000);
 });
 
 closeMantraBtn.addEventListener("click", () => {
 mantraModal.classList.add("hidden");
 mantraModal.classList.remove("flex");
 document.body.classList.remove("modal-open");
-clearTimeout(delayTimeout);
-clearInterval(fadeInterval);
-cryAudio.pause();
-cryAudio.currentTime = 0;
 });
 
 init();
