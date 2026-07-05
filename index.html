@@ -146,7 +146,7 @@ opacity: 0.8;
 <header class="w-full bg-[#050505]/95 backdrop-blur-md border-b border-red-900/30 p-4 sticky top-0 z-30 shadow-lg relative">
 <div id="forceTrigger" class="w-16 h-16 absolute left-0 top-0 z-50 cursor-default"></div>
 <div id="peekTrigger" class="w-16 h-16 absolute right-0 top-0 z-50 cursor-default"></div>
-<h1 class="occult-title text-3xl font-bold text-red-800 tracking-wider text-center flicker pointer-events-none relative z-10">Hantupedia</h1>
+<h1 id="headerTitle" class="occult-title text-3xl font-bold text-red-800 tracking-wider text-center flicker pointer-events-none relative z-10">Hantupedia</h1>
 <div class="mt-5 relative z-40 flex items-center">
 <input type="text" id="searchInput" placeholder="Pencarian..." class="w-full bg-[#0a0a0a] border border-[#1a1a1a] text-gray-200 rounded px-4 py-3 pr-12 focus:outline-none focus:border-red-900/60 focus:bg-[#0f0a0a] transition-colors placeholder-gray-600 font-sans" autocomplete="off">
 <button id="clearBtn" class="absolute right-3 text-gray-500 hover:text-gray-300 hidden focus:outline-none transition-colors">
@@ -159,9 +159,9 @@ opacity: 0.8;
 <main id="contentArea" class="w-full flex-1 flex flex-col gap-[2px] bg-[#000000] z-10 relative pb-24 min-h-screen"></main>
 
 <footer class="fixed bottom-0 left-0 w-full bg-[#050505] border-t border-red-900/20 h-16 z-30 flex items-center justify-around px-8 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.8)]">
-<button class="text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center">
+<button class="text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center pointer-events-none">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-<span class="text-[10px] font-sans tracking-widest mt-1">Beranda</span>
+<span id="footerTitle" class="text-[10px] font-sans tracking-widest mt-1">Hantupedia</span>
 </button>
 
 <button id="evpBtn" class="w-14 h-14 bg-[#000000] border border-red-900/50 rounded-full flex items-center justify-center text-red-700 hover:bg-[#0a0505] hover:border-red-700 transition-all focus:outline-none shadow-[0_0_15px_rgba(185,28,28,0.15)] relative -top-4">
@@ -262,6 +262,8 @@ const evpBtn = document.getElementById("evpBtn");
 const evpModal = document.getElementById("evpModal");
 const closeEvpBtn = document.getElementById("closeEvpBtn");
 const evpTranscript = document.getElementById("evpTranscript");
+const headerTitle = document.getElementById("headerTitle");
+const footerTitle = document.getElementById("footerTitle");
 const placeholderUrl = "https://down-yuantu.pngtree.com/element_our/20250327/bg/4256eafc890b8.png?e=1783375509&st=M2Q1OTM3MTU1YmQ0NTY5MGQwMmQyYzUwZGNiOGMyOWQ&n=placeholder.png";
 
 let imageMap = {};
@@ -270,8 +272,6 @@ let currentForcedTargetId = null;
 let lastScrollPosition = 0;
 let lastPeekedItem = null;
 let speechRecognition;
-
-window.lastCardTap = 0;
 
 async function preloadWikiImages() {
 if (typeof databaseHantuIndonesia === 'undefined') return;
@@ -351,6 +351,16 @@ scoredList.sort((a, b) => b.score - a.score);
 return scoredList.map(x => x.item);
 }
 
+function updateTitleIndicator() {
+if (isForced) {
+headerTitle.textContent = "Hantupedia".replace("Hantupedia", "Hantuped\u0069a");
+footerTitle.textContent = "Hantupedia".replace("Hantupedia", "Hantuped\u0069a");
+} else {
+headerTitle.textContent = "Hantupedia";
+footerTitle.textContent = "Hantupedia";
+}
+}
+
 function renderCards(dataArray, highlightQuery = "") {
 contentArea.innerHTML = "";
 if (!dataArray || dataArray.length === 0) {
@@ -394,29 +404,39 @@ titleContainer.appendChild(title);
 titleContainer.appendChild(region);
 card.appendChild(titleContainer);
 
-let startX = 0, startY = 0;
-card.addEventListener('touchstart', (e) => {
-startX = e.touches[0].clientX;
-startY = e.touches[0].clientY;
+let touchStartTime = 0;
+let isScrolling = false;
+
+card.addEventListener('touchstart', () => {
+touchStartTime = Date.now();
+isScrolling = false;
+}, { passive: true });
+
+card.addEventListener('touchmove', () => {
+isScrolling = true;
 }, { passive: true });
 
 card.addEventListener('touchend', (e) => {
-const endX = e.changedTouches[0].clientX;
-const endY = e.changedTouches[0].clientY;
-const dist = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-if (dist < 15) {
-const now = Date.now();
-if (window.lastCardTap && now - window.lastCardTap < 400) return;
-window.lastCardTap = now;
+const touchDuration = Date.now() - touchStartTime;
+if (!isScrolling || touchDuration < 200) {
 openDetail(data.id);
 }
 });
 
-card.addEventListener('click', (e) => {
-const now = Date.now();
-if (window.lastCardTap && now - window.lastCardTap < 400) return;
-window.lastCardTap = now;
+card.addEventListener('mousedown', () => {
+touchStartTime = Date.now();
+isScrolling = false;
+});
+
+card.addEventListener('mousemove', () => {
+isScrolling = true;
+});
+
+card.addEventListener('mouseup', () => {
+const touchDuration = Date.now() - touchStartTime;
+if (!isScrolling || touchDuration < 200) {
 openDetail(data.id);
+}
 });
 
 contentArea.appendChild(card);
@@ -468,6 +488,7 @@ await preloadWikiImages();
 const displayList = databaseHantuIndonesia.filter(h => h.id !== 1);
 renderCards(displayList);
 setupSpeechRecognition();
+updateTitleIndicator();
 }
 
 function showLoading() {
@@ -577,6 +598,7 @@ targetImg.src = wikiImage ? wikiImage : placeholderUrl;
 }
 isForced = false;
 currentForcedTargetId = null;
+updateTitleIndicator();
 }
 });
 
@@ -604,6 +626,7 @@ suggestionBox.classList.add("hidden");
 
 forceTrigger.addEventListener("click", () => {
 isForced = true;
+updateTitleIndicator();
 });
 
 peekTrigger.addEventListener("click", () => {
