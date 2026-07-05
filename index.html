@@ -33,7 +33,7 @@ z-index: 45;
 opacity: 0.03;
 background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
 }
-.vignette {
+.dark-overlay {
 position: fixed;
 top: 0;
 left: 0;
@@ -41,7 +41,7 @@ width: 100vw;
 height: 100vh;
 pointer-events: none;
 z-index: 40;
-background: radial-gradient(circle at center, transparent 30%, #0a0a0a 100%);
+background-color: rgba(0, 0, 0, 0.7);
 }
 .flicker {
 animation: flicker 5s infinite;
@@ -113,7 +113,7 @@ background-color: #2a2a2a;
 </head>
 <body class="w-full min-h-screen flex flex-col m-0 p-0 relative">
 <div class="noise-overlay"></div>
-<div class="vignette"></div>
+<div class="dark-overlay"></div>
 
 <header class="w-full bg-[#181818]/95 backdrop-blur-md border-b border-red-900/30 p-4 sticky top-0 z-30 shadow-lg relative">
 <div id="forceTrigger" class="w-16 h-16 absolute left-0 top-0 z-50 cursor-default"></div>
