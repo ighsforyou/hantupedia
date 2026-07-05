@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Hantupedia</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;0,700;1,400&family=Noto+Sans+Javanese&display=swap" rel="stylesheet">
 <style>
 html, body {
 margin: 0;
@@ -22,6 +22,10 @@ overflow: hidden;
 }
 .occult-title {
 font-family: 'Cinzel', serif;
+}
+.aksara-jawa {
+font-family: 'Noto Sans Javanese', sans-serif;
+line-height: 2;
 }
 .noise-overlay {
 position: fixed;
@@ -139,16 +143,27 @@ background-color: #1a1a1a;
 <span id="leftFooterText" class="text-[10px] font-sans tracking-widest mt-1 w-full truncate text-center">Hantupedia</span>
 </button>
 
-<button class="w-24 flex-shrink-0 text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center pointer-events-none">
+<button class="w-14 h-14 flex-shrink-0 bg-[#000000] border border-red-900/50 rounded-full flex items-center justify-center text-red-700 pointer-events-none shadow-[0_0_15px_rgba(185,28,28,0.15)] relative -top-4">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-<span class="text-[10px] font-sans tracking-widest mt-1 w-full truncate text-center">Lokasi</span>
 </button>
 
-<button id="audioTriggerBtn" class="w-24 flex-shrink-0 text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center">
-<svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-<span id="rightFooterText" class="text-[10px] font-sans tracking-widest mt-1 w-full truncate text-center pointer-events-none">Tambah</span>
+<button id="mantraBtn" class="w-24 flex-shrink-0 text-red-900/50 hover:text-red-800 transition-colors focus:outline-none flex flex-col items-center">
+<svg class="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+<span id="rightFooterText" class="text-[10px] font-sans tracking-widest mt-1 w-full truncate text-center pointer-events-none">Mantra</span>
 </button>
 </footer>
+
+<div id="mantraModal" class="fixed inset-0 bg-[#050202] z-[80] hidden flex-col items-center justify-center p-8 w-full h-full relative">
+<div class="absolute inset-0 opacity-40 pointer-events-none" style="background-image: radial-gradient(circle at center, transparent 20%, #000000 90%);"></div>
+<button id="closeMantraBtn" class="absolute top-6 right-6 text-red-900/50 hover:text-red-700 transition-colors focus:outline-none p-2 z-20">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+</button>
+<div class="relative z-10 text-center max-w-sm flex flex-col gap-10">
+<p class="aksara-jawa text-red-800/90 text-[2.5rem] tracking-wide drop-shadow-[0_0_8px_rgba(185,28,28,0.5)]">ꦲꦺꦴꦁ꧈ ꦱꦶꦁ ꦱꦸꦩꦶꦩ꧀ꦥꦼꦤ꧀ ꦲꦶꦁ ꦥꦼꦠꦼꦁ꧈ ꦏꦠꦺꦴꦤ꧀ꦲꦺꦴ! ꦠꦼꦏꦺꦴ... ꦠꦼꦏꦺꦴ... ꦠꦼꦏꦺꦴ!</p>
+<div class="w-32 h-[1px] bg-red-900/40 mx-auto"></div>
+<p class="occult-title text-gray-300/80 text-xl tracking-[0.15em] leading-loose">"Hong, sing sumimpen ing peteng, Katonho! Teko... teko... teko!"</p>
+</div>
+</div>
 
 <div id="creepyLoading" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center w-full h-full">
 <div class="glitch-text font-bold uppercase tracking-widest">Memuat...</div>
@@ -210,7 +225,9 @@ const forceTrigger = document.getElementById("forceTrigger");
 const peekTrigger = document.getElementById("peekTrigger");
 const leftFooterText = document.getElementById("leftFooterText");
 const rightFooterText = document.getElementById("rightFooterText");
-const audioTriggerBtn = document.getElementById("audioTriggerBtn");
+const mantraBtn = document.getElementById("mantraBtn");
+const mantraModal = document.getElementById("mantraModal");
+const closeMantraBtn = document.getElementById("closeMantraBtn");
 const cryAudio = document.getElementById("cryAudio");
 const placeholderUrl = "https://down-yuantu.pngtree.com/element_our/20250327/bg/4256eafc890b8.png?e=1783375509&st=M2Q1OTM3MTU1YmQ0NTY5MGQwMmQyYzUwZGNiOGMyOWQ&n=placeholder.png";
 
@@ -219,6 +236,8 @@ let isForced = false;
 let currentForcedTargetId = null;
 let lastScrollPosition = 0;
 let lastPeekedItem = null;
+let delayTimeout;
+let fadeInterval;
 
 window.lastCardTap = 0;
 
@@ -430,19 +449,20 @@ suggestionBox.classList.add("hidden");
 
 function fadeAudio(audio, startVolume, endVolume, duration) {
 return new Promise(resolve => {
+clearInterval(fadeInterval);
 const steps = 20;
 const stepTime = duration / steps;
 const volumeStep = (endVolume - startVolume) / steps;
 let currentStep = 0;
 audio.volume = startVolume;
-const interval = setInterval(() => {
+fadeInterval = setInterval(() => {
 currentStep++;
 let newVolume = startVolume + (volumeStep * currentStep);
 if(newVolume > 1) newVolume = 1;
 if(newVolume < 0) newVolume = 0;
 audio.volume = newVolume;
 if (currentStep >= steps) {
-clearInterval(interval);
+clearInterval(fadeInterval);
 audio.volume = endVolume;
 resolve();
 }
@@ -581,12 +601,16 @@ rightFooterText.textContent = nameParts.length > 1 ? nameParts.slice(1).join(" "
 
 setTimeout(() => {
 updateTitleIndicator();
-rightFooterText.textContent = "Tambah";
+rightFooterText.textContent = "Mantra";
 }, 2500);
 }
 });
 
-audioTriggerBtn.addEventListener("click", () => {
+mantraBtn.addEventListener("click", () => {
+mantraModal.classList.remove("hidden");
+mantraModal.classList.add("flex");
+document.body.classList.add("modal-open");
+
 try {
 cryAudio.volume = 0;
 cryAudio.play().then(() => {
@@ -595,7 +619,10 @@ cryAudio.currentTime = 0;
 }).catch(() => {});
 } catch(e) {}
 
-setTimeout(async () => {
+clearTimeout(delayTimeout);
+clearInterval(fadeInterval);
+
+delayTimeout = setTimeout(async () => {
 try {
 cryAudio.volume = 0;
 await cryAudio.play();
@@ -607,6 +634,12 @@ cryAudio.currentTime = 0;
 }, 8000);
 } catch(e) {}
 }, 10000);
+});
+
+closeMantraBtn.addEventListener("click", () => {
+mantraModal.classList.add("hidden");
+mantraModal.classList.remove("flex");
+document.body.classList.remove("modal-open");
 });
 
 init();
